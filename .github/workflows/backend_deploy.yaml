@@ -59,20 +59,9 @@ jobs:
             git apply ../.github/config/mail-parser-wasm-worker.patch
             echo "Applied mail-parser-wasm-worker patch"
           fi
-
-          if [ "$debug_mode" = "true" ]; then
-            pnpm run deploy
-          else
-            output=$(pnpm run deploy 2>&1)
-            exit_code=$?
-            if [ $exit_code -ne 0 ]; then
-                # 在退出前把捕获到的错误日志打印出来
-                echo "Deploy Failed! Error Log:"
-                echo "$output"
-                echo "Command failed with exit code $exit_code"
-                exit $exit_code
-            fi
-          fi
+          
+          pnpm run deploy
+          
           echo "Deployed for tag ${{ github.ref_name }}"
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
